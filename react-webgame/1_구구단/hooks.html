@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <!-- react -->
+        <script src="https://unpkg.com/react@16/umd/react.development.js"></script> 
+        <!-- react-dom -->
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script> 
+        <!-- babel-loader -->
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        
+        <meta charset="UTF-8"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+        <title>Hook</title>
+    </head>
+
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const Hooks = () => {
+                // state 선언 방법 : 여기에 초기 값 넣기 
+                // const Hook 바깥으로 빼면 안되는 것 주의!!
+                const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
+                const [second, setSecond] = React.useState(Math.ceil(Math.random() * 9));
+                const [value, setValue] = React.useState('');
+                const [result, setResult] = React.useState('');
+
+                // ref사용
+                const inputRef = React.useRef(null);
+
+                const onSubmitForm = (e) => {
+                    e.preventDefault();
+                    if (parseInt(value) === first * second) {
+                        setResult('정답!  ' + value);
+                        setFirst(Math.ceil(Math.random() * 9));
+                        setSecond(Math.ceil(Math.random() * 9));
+                        setValue('');
+                        inputRef.current.focus();
+                    } else {
+                        setResult('땡!!!!');
+                        setValue(''); 
+                        inputRef.current.focus();
+                    }
+                };
+
+                const onChangeInput = (e) => {
+                    setValue(e.target.value);
+                };
+
+                return (
+                    <React.Fragment>
+                        <div>{first} 곱하기 {second} 는 ?</div>
+                        <form onSubmit={onSubmitForm}>
+                            <input ref={inputRef} onChange={onChangeInput} value={value} />
+                            <button>Enter</button>    
+                        </form>
+
+                        <div id="result">{result}</div>
+                    </React.Fragment>
+                );
+                // 안에 setState, ref등등 을 쓸 필요가 없는 컴포넌트의 경우 이렇게 함수형 컴포넌트로 사용 가능
+                // 함수형을 쓰면서도 setState, ref 등등을 사용할 수 있도록 해달라는 요청을 들어줌 -> 이게 바로 React Hooks 
+            }
+        </script>
+
+        <script type="text/babel">
+            ReactDOM.render(<Hooks />, document.querySelector('#root'));
+        </script>
+    </body>
+</html>
