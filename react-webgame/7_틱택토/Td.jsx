@@ -16,6 +16,4 @@ const Td = memo(({ rowIndex, cellIndex, dispatch, cellData }) => {
         <td onClick={onClickTd}>{cellData}</td>
     )
 });
-
-
 export default Td;
